@@ -7,13 +7,13 @@ Grammar
     2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type ';'
     3                | error ';'
 
-    4 optional_variable: ε
+    4 optional_variable: %empty
     5                  | optional_variable variable
     6                  | error ';'
 
     7 variable: IDENTIFIER ':' type IS statement_
 
-    8 optional_parameter: ε
+    8 optional_parameter: %empty
     9                   | parameter_list
 
    10 parameter_list: parameter_list ',' parameter
@@ -25,7 +25,7 @@ Grammar
    14     | REAL
    15     | BOOLEAN
 
-   16 $@1: ε
+   16 $@1: %empty
 
    17 body: BEGIN_ $@1 statement_ END ';'
 
@@ -35,27 +35,27 @@ Grammar
    20 statement: expression
    21          | REDUCE operator reductions ENDREDUCE
 
-   22 $@2: ε
+   22 $@2: %empty
 
    23 statement: IF expression THEN $@2 statement_ ELSE statement_ ENDIF
 
-   24 $@3: ε
+   24 $@3: %empty
 
    25 statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE
 
    26 operator: ADDOP
    27         | MULOP
 
-   28 $@4: ε
+   28 $@4: %empty
 
    29 cases: WHEN INT_LITERAL ARROWOP statement_ $@4 optional_case
 
    30 optional_case: optional_case case
-   31              | ε
+   31              | %empty
 
    32 case: WHEN INT_LITERAL ARROWOP statement_
 
-   33 reductions: ε
+   33 reductions: %empty
    34           | reductions statement_
 
    35 expression: expression OROP binary
@@ -222,7 +222,7 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: • function $end
+    0 $accept: . function $end
 
     error     shift, and go to state 1
     FUNCTION  shift, and go to state 2
@@ -233,28 +233,28 @@ State 0
 
 State 1
 
-    3 function_header: error • ';'
+    3 function_header: error . ';'
 
     ';'  shift, and go to state 5
 
 
 State 2
 
-    2 function_header: FUNCTION • IDENTIFIER optional_parameter RETURNS type ';'
+    2 function_header: FUNCTION . IDENTIFIER optional_parameter RETURNS type ';'
 
     IDENTIFIER  shift, and go to state 6
 
 
 State 3
 
-    0 $accept: function • $end
+    0 $accept: function . $end
 
     $end  shift, and go to state 7
 
 
 State 4
 
-    1 function: function_header • optional_variable body
+    1 function: function_header . optional_variable body
 
     error  shift, and go to state 8
 
@@ -266,14 +266,14 @@ State 4
 
 State 5
 
-    3 function_header: error ';' •
+    3 function_header: error ';' .
 
     $default  reduce using rule 3 (function_header)
 
 
 State 6
 
-    2 function_header: FUNCTION IDENTIFIER • optional_parameter RETURNS type ';'
+    2 function_header: FUNCTION IDENTIFIER . optional_parameter RETURNS type ';'
 
     IDENTIFIER  shift, and go to state 10
 
@@ -286,22 +286,22 @@ State 6
 
 State 7
 
-    0 $accept: function $end •
+    0 $accept: function $end .
 
     $default  accept
 
 
 State 8
 
-    6 optional_variable: error • ';'
+    6 optional_variable: error . ';'
 
     ';'  shift, and go to state 14
 
 
 State 9
 
-    1 function: function_header optional_variable • body
-    5 optional_variable: optional_variable • variable
+    1 function: function_header optional_variable . body
+    5 optional_variable: optional_variable . variable
 
     IDENTIFIER  shift, and go to state 15
     BEGIN_      shift, and go to state 16
@@ -312,22 +312,22 @@ State 9
 
 State 10
 
-   12 parameter: IDENTIFIER • ':' type
+   12 parameter: IDENTIFIER . ':' type
 
     ':'  shift, and go to state 19
 
 
 State 11
 
-    2 function_header: FUNCTION IDENTIFIER optional_parameter • RETURNS type ';'
+    2 function_header: FUNCTION IDENTIFIER optional_parameter . RETURNS type ';'
 
     RETURNS  shift, and go to state 20
 
 
 State 12
 
-    9 optional_parameter: parameter_list •
-   10 parameter_list: parameter_list • ',' parameter
+    9 optional_parameter: parameter_list .
+   10 parameter_list: parameter_list . ',' parameter
 
     ','  shift, and go to state 21
 
@@ -336,28 +336,28 @@ State 12
 
 State 13
 
-   11 parameter_list: parameter •
+   11 parameter_list: parameter .
 
     $default  reduce using rule 11 (parameter_list)
 
 
 State 14
 
-    6 optional_variable: error ';' •
+    6 optional_variable: error ';' .
 
     $default  reduce using rule 6 (optional_variable)
 
 
 State 15
 
-    7 variable: IDENTIFIER • ':' type IS statement_
+    7 variable: IDENTIFIER . ':' type IS statement_
 
     ':'  shift, and go to state 22
 
 
 State 16
 
-   17 body: BEGIN_ • $@1 statement_ END ';'
+   17 body: BEGIN_ . $@1 statement_ END ';'
 
     $default  reduce using rule 16 ($@1)
 
@@ -366,21 +366,21 @@ State 16
 
 State 17
 
-    5 optional_variable: optional_variable variable •
+    5 optional_variable: optional_variable variable .
 
     $default  reduce using rule 5 (optional_variable)
 
 
 State 18
 
-    1 function: function_header optional_variable body •
+    1 function: function_header optional_variable body .
 
     $default  reduce using rule 1 (function)
 
 
 State 19
 
-   12 parameter: IDENTIFIER ':' • type
+   12 parameter: IDENTIFIER ':' . type
 
     BOOLEAN  shift, and go to state 24
     INTEGER  shift, and go to state 25
@@ -391,7 +391,7 @@ State 19
 
 State 20
 
-    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS • type ';'
+    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS . type ';'
 
     BOOLEAN  shift, and go to state 24
     INTEGER  shift, and go to state 25
@@ -402,7 +402,7 @@ State 20
 
 State 21
 
-   10 parameter_list: parameter_list ',' • parameter
+   10 parameter_list: parameter_list ',' . parameter
 
     IDENTIFIER  shift, and go to state 10
 
@@ -411,7 +411,7 @@ State 21
 
 State 22
 
-    7 variable: IDENTIFIER ':' • type IS statement_
+    7 variable: IDENTIFIER ':' . type IS statement_
 
     BOOLEAN  shift, and go to state 24
     INTEGER  shift, and go to state 25
@@ -422,7 +422,7 @@ State 22
 
 State 23
 
-   17 body: BEGIN_ $@1 • statement_ END ';'
+   17 body: BEGIN_ $@1 . statement_ END ';'
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -449,91 +449,91 @@ State 23
 
 State 24
 
-   15 type: BOOLEAN •
+   15 type: BOOLEAN .
 
     $default  reduce using rule 15 (type)
 
 
 State 25
 
-   13 type: INTEGER •
+   13 type: INTEGER .
 
     $default  reduce using rule 13 (type)
 
 
 State 26
 
-   14 type: REAL •
+   14 type: REAL .
 
     $default  reduce using rule 14 (type)
 
 
 State 27
 
-   12 parameter: IDENTIFIER ':' type •
+   12 parameter: IDENTIFIER ':' type .
 
     $default  reduce using rule 12 (parameter)
 
 
 State 28
 
-    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type • ';'
+    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type . ';'
 
     ';'  shift, and go to state 51
 
 
 State 29
 
-   10 parameter_list: parameter_list ',' parameter •
+   10 parameter_list: parameter_list ',' parameter .
 
     $default  reduce using rule 10 (parameter_list)
 
 
 State 30
 
-    7 variable: IDENTIFIER ':' type • IS statement_
+    7 variable: IDENTIFIER ':' type . IS statement_
 
     IS  shift, and go to state 52
 
 
 State 31
 
-   19 statement_: error • ';'
+   19 statement_: error . ';'
 
     ';'  shift, and go to state 53
 
 
 State 32
 
-   55 primary: IDENTIFIER •
+   55 primary: IDENTIFIER .
 
     $default  reduce using rule 55 (primary)
 
 
 State 33
 
-   52 primary: INT_LITERAL •
+   52 primary: INT_LITERAL .
 
     $default  reduce using rule 52 (primary)
 
 
 State 34
 
-   54 primary: BOOL_LITERAL •
+   54 primary: BOOL_LITERAL .
 
     $default  reduce using rule 54 (primary)
 
 
 State 35
 
-   53 primary: REAL_LITERAL •
+   53 primary: REAL_LITERAL .
 
     $default  reduce using rule 53 (primary)
 
 
 State 36
 
-   49 unary: NOTOP • primary
+   49 unary: NOTOP . primary
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -546,7 +546,7 @@ State 36
 
 State 37
 
-   21 statement: REDUCE • operator reductions ENDREDUCE
+   21 statement: REDUCE . operator reductions ENDREDUCE
 
     ADDOP  shift, and go to state 55
     MULOP  shift, and go to state 56
@@ -556,7 +556,7 @@ State 37
 
 State 38
 
-   25 statement: CASE • expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE
+   25 statement: CASE . expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -577,7 +577,7 @@ State 38
 
 State 39
 
-   23 statement: IF • expression THEN $@2 statement_ ELSE statement_ ENDIF
+   23 statement: IF . expression THEN $@2 statement_ ELSE statement_ ENDIF
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -598,7 +598,7 @@ State 39
 
 State 40
 
-   51 primary: '(' • expression ')'
+   51 primary: '(' . expression ')'
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -619,22 +619,22 @@ State 40
 
 State 41
 
-   17 body: BEGIN_ $@1 statement_ • END ';'
+   17 body: BEGIN_ $@1 statement_ . END ';'
 
     END  shift, and go to state 61
 
 
 State 42
 
-   18 statement_: statement • ';'
+   18 statement_: statement . ';'
 
     ';'  shift, and go to state 62
 
 
 State 43
 
-   20 statement: expression •
-   35 expression: expression • OROP binary
+   20 statement: expression .
+   35 expression: expression . OROP binary
 
     OROP  shift, and go to state 63
 
@@ -643,8 +643,8 @@ State 43
 
 State 44
 
-   36 expression: binary •
-   37 binary: binary • ANDOP relation
+   36 expression: binary .
+   37 binary: binary . ANDOP relation
 
     ANDOP  shift, and go to state 64
 
@@ -653,8 +653,8 @@ State 44
 
 State 45
 
-   38 binary: relation •
-   39 relation: relation • RELOP term
+   38 binary: relation .
+   39 relation: relation . RELOP term
 
     RELOP  shift, and go to state 65
 
@@ -663,8 +663,8 @@ State 45
 
 State 46
 
-   40 relation: term •
-   41 term: term • ADDOP factor
+   40 relation: term .
+   41 term: term . ADDOP factor
 
     ADDOP  shift, and go to state 66
 
@@ -673,9 +673,9 @@ State 46
 
 State 47
 
-   42 term: factor •
-   43 factor: factor • MULOP exponent
-   44       | factor • REMOP exponent
+   42 term: factor .
+   43 factor: factor . MULOP exponent
+   44       | factor . REMOP exponent
 
     MULOP  shift, and go to state 67
     REMOP  shift, and go to state 68
@@ -685,9 +685,9 @@ State 47
 
 State 48
 
-   45 factor: exponent •
-   46 exponent: exponent • EXPOP unary
-   47         | exponent • '(' unary ')'
+   45 factor: exponent .
+   46 exponent: exponent . EXPOP unary
+   47         | exponent . '(' unary ')'
 
     EXPOP  shift, and go to state 69
     '('    shift, and go to state 70
@@ -697,28 +697,28 @@ State 48
 
 State 49
 
-   48 exponent: unary •
+   48 exponent: unary .
 
     $default  reduce using rule 48 (exponent)
 
 
 State 50
 
-   50 unary: primary •
+   50 unary: primary .
 
     $default  reduce using rule 50 (unary)
 
 
 State 51
 
-    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type ';' •
+    2 function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type ';' .
 
     $default  reduce using rule 2 (function_header)
 
 
 State 52
 
-    7 variable: IDENTIFIER ':' type IS • statement_
+    7 variable: IDENTIFIER ':' type IS . statement_
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -745,35 +745,35 @@ State 52
 
 State 53
 
-   19 statement_: error ';' •
+   19 statement_: error ';' .
 
     $default  reduce using rule 19 (statement_)
 
 
 State 54
 
-   49 unary: NOTOP primary •
+   49 unary: NOTOP primary .
 
     $default  reduce using rule 49 (unary)
 
 
 State 55
 
-   26 operator: ADDOP •
+   26 operator: ADDOP .
 
     $default  reduce using rule 26 (operator)
 
 
 State 56
 
-   27 operator: MULOP •
+   27 operator: MULOP .
 
     $default  reduce using rule 27 (operator)
 
 
 State 57
 
-   21 statement: REDUCE operator • reductions ENDREDUCE
+   21 statement: REDUCE operator . reductions ENDREDUCE
 
     $default  reduce using rule 33 (reductions)
 
@@ -782,8 +782,8 @@ State 57
 
 State 58
 
-   25 statement: CASE expression • $@3 IS cases OTHERS ARROWOP statement_ ENDCASE
-   35 expression: expression • OROP binary
+   25 statement: CASE expression . $@3 IS cases OTHERS ARROWOP statement_ ENDCASE
+   35 expression: expression . OROP binary
 
     OROP  shift, and go to state 63
 
@@ -794,8 +794,8 @@ State 58
 
 State 59
 
-   23 statement: IF expression • THEN $@2 statement_ ELSE statement_ ENDIF
-   35 expression: expression • OROP binary
+   23 statement: IF expression . THEN $@2 statement_ ELSE statement_ ENDIF
+   35 expression: expression . OROP binary
 
     OROP  shift, and go to state 63
     THEN  shift, and go to state 74
@@ -803,8 +803,8 @@ State 59
 
 State 60
 
-   35 expression: expression • OROP binary
-   51 primary: '(' expression • ')'
+   35 expression: expression . OROP binary
+   51 primary: '(' expression . ')'
 
     OROP  shift, and go to state 63
     ')'   shift, and go to state 75
@@ -812,21 +812,21 @@ State 60
 
 State 61
 
-   17 body: BEGIN_ $@1 statement_ END • ';'
+   17 body: BEGIN_ $@1 statement_ END . ';'
 
     ';'  shift, and go to state 76
 
 
 State 62
 
-   18 statement_: statement ';' •
+   18 statement_: statement ';' .
 
     $default  reduce using rule 18 (statement_)
 
 
 State 63
 
-   35 expression: expression OROP • binary
+   35 expression: expression OROP . binary
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -846,7 +846,7 @@ State 63
 
 State 64
 
-   37 binary: binary ANDOP • relation
+   37 binary: binary ANDOP . relation
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -865,7 +865,7 @@ State 64
 
 State 65
 
-   39 relation: relation RELOP • term
+   39 relation: relation RELOP . term
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -883,7 +883,7 @@ State 65
 
 State 66
 
-   41 term: term ADDOP • factor
+   41 term: term ADDOP . factor
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -900,7 +900,7 @@ State 66
 
 State 67
 
-   43 factor: factor MULOP • exponent
+   43 factor: factor MULOP . exponent
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -916,7 +916,7 @@ State 67
 
 State 68
 
-   44 factor: factor REMOP • exponent
+   44 factor: factor REMOP . exponent
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -932,7 +932,7 @@ State 68
 
 State 69
 
-   46 exponent: exponent EXPOP • unary
+   46 exponent: exponent EXPOP . unary
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -947,7 +947,7 @@ State 69
 
 State 70
 
-   47 exponent: exponent '(' • unary ')'
+   47 exponent: exponent '(' . unary ')'
 
     IDENTIFIER    shift, and go to state 32
     INT_LITERAL   shift, and go to state 33
@@ -962,15 +962,15 @@ State 70
 
 State 71
 
-    7 variable: IDENTIFIER ':' type IS statement_ •
+    7 variable: IDENTIFIER ':' type IS statement_ .
 
     $default  reduce using rule 7 (variable)
 
 
 State 72
 
-   21 statement: REDUCE operator reductions • ENDREDUCE
-   34 reductions: reductions • statement_
+   21 statement: REDUCE operator reductions . ENDREDUCE
+   34 reductions: reductions . statement_
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -998,14 +998,14 @@ State 72
 
 State 73
 
-   25 statement: CASE expression $@3 • IS cases OTHERS ARROWOP statement_ ENDCASE
+   25 statement: CASE expression $@3 . IS cases OTHERS ARROWOP statement_ ENDCASE
 
     IS  shift, and go to state 87
 
 
 State 74
 
-   23 statement: IF expression THEN • $@2 statement_ ELSE statement_ ENDIF
+   23 statement: IF expression THEN . $@2 statement_ ELSE statement_ ENDIF
 
     $default  reduce using rule 22 ($@2)
 
@@ -1014,22 +1014,22 @@ State 74
 
 State 75
 
-   51 primary: '(' expression ')' •
+   51 primary: '(' expression ')' .
 
     $default  reduce using rule 51 (primary)
 
 
 State 76
 
-   17 body: BEGIN_ $@1 statement_ END ';' •
+   17 body: BEGIN_ $@1 statement_ END ';' .
 
     $default  reduce using rule 17 (body)
 
 
 State 77
 
-   35 expression: expression OROP binary •
-   37 binary: binary • ANDOP relation
+   35 expression: expression OROP binary .
+   37 binary: binary . ANDOP relation
 
     ANDOP  shift, and go to state 64
 
@@ -1038,8 +1038,8 @@ State 77
 
 State 78
 
-   37 binary: binary ANDOP relation •
-   39 relation: relation • RELOP term
+   37 binary: binary ANDOP relation .
+   39 relation: relation . RELOP term
 
     RELOP  shift, and go to state 65
 
@@ -1048,8 +1048,8 @@ State 78
 
 State 79
 
-   39 relation: relation RELOP term •
-   41 term: term • ADDOP factor
+   39 relation: relation RELOP term .
+   41 term: term . ADDOP factor
 
     ADDOP  shift, and go to state 66
 
@@ -1058,9 +1058,9 @@ State 79
 
 State 80
 
-   41 term: term ADDOP factor •
-   43 factor: factor • MULOP exponent
-   44       | factor • REMOP exponent
+   41 term: term ADDOP factor .
+   43 factor: factor . MULOP exponent
+   44       | factor . REMOP exponent
 
     MULOP  shift, and go to state 67
     REMOP  shift, and go to state 68
@@ -1070,9 +1070,9 @@ State 80
 
 State 81
 
-   43 factor: factor MULOP exponent •
-   46 exponent: exponent • EXPOP unary
-   47         | exponent • '(' unary ')'
+   43 factor: factor MULOP exponent .
+   46 exponent: exponent . EXPOP unary
+   47         | exponent . '(' unary ')'
 
     EXPOP  shift, and go to state 69
     '('    shift, and go to state 70
@@ -1082,9 +1082,9 @@ State 81
 
 State 82
 
-   44 factor: factor REMOP exponent •
-   46 exponent: exponent • EXPOP unary
-   47         | exponent • '(' unary ')'
+   44 factor: factor REMOP exponent .
+   46 exponent: exponent . EXPOP unary
+   47         | exponent . '(' unary ')'
 
     EXPOP  shift, and go to state 69
     '('    shift, and go to state 70
@@ -1094,35 +1094,35 @@ State 82
 
 State 83
 
-   46 exponent: exponent EXPOP unary •
+   46 exponent: exponent EXPOP unary .
 
     $default  reduce using rule 46 (exponent)
 
 
 State 84
 
-   47 exponent: exponent '(' unary • ')'
+   47 exponent: exponent '(' unary . ')'
 
     ')'  shift, and go to state 89
 
 
 State 85
 
-   21 statement: REDUCE operator reductions ENDREDUCE •
+   21 statement: REDUCE operator reductions ENDREDUCE .
 
     $default  reduce using rule 21 (statement)
 
 
 State 86
 
-   34 reductions: reductions statement_ •
+   34 reductions: reductions statement_ .
 
     $default  reduce using rule 34 (reductions)
 
 
 State 87
 
-   25 statement: CASE expression $@3 IS • cases OTHERS ARROWOP statement_ ENDCASE
+   25 statement: CASE expression $@3 IS . cases OTHERS ARROWOP statement_ ENDCASE
 
     WHEN  shift, and go to state 90
 
@@ -1131,7 +1131,7 @@ State 87
 
 State 88
 
-   23 statement: IF expression THEN $@2 • statement_ ELSE statement_ ENDIF
+   23 statement: IF expression THEN $@2 . statement_ ELSE statement_ ENDIF
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -1158,49 +1158,49 @@ State 88
 
 State 89
 
-   47 exponent: exponent '(' unary ')' •
+   47 exponent: exponent '(' unary ')' .
 
     $default  reduce using rule 47 (exponent)
 
 
 State 90
 
-   29 cases: WHEN • INT_LITERAL ARROWOP statement_ $@4 optional_case
+   29 cases: WHEN . INT_LITERAL ARROWOP statement_ $@4 optional_case
 
     INT_LITERAL  shift, and go to state 93
 
 
 State 91
 
-   25 statement: CASE expression $@3 IS cases • OTHERS ARROWOP statement_ ENDCASE
+   25 statement: CASE expression $@3 IS cases . OTHERS ARROWOP statement_ ENDCASE
 
     OTHERS  shift, and go to state 94
 
 
 State 92
 
-   23 statement: IF expression THEN $@2 statement_ • ELSE statement_ ENDIF
+   23 statement: IF expression THEN $@2 statement_ . ELSE statement_ ENDIF
 
     ELSE  shift, and go to state 95
 
 
 State 93
 
-   29 cases: WHEN INT_LITERAL • ARROWOP statement_ $@4 optional_case
+   29 cases: WHEN INT_LITERAL . ARROWOP statement_ $@4 optional_case
 
     ARROWOP  shift, and go to state 96
 
 
 State 94
 
-   25 statement: CASE expression $@3 IS cases OTHERS • ARROWOP statement_ ENDCASE
+   25 statement: CASE expression $@3 IS cases OTHERS . ARROWOP statement_ ENDCASE
 
     ARROWOP  shift, and go to state 97
 
 
 State 95
 
-   23 statement: IF expression THEN $@2 statement_ ELSE • statement_ ENDIF
+   23 statement: IF expression THEN $@2 statement_ ELSE . statement_ ENDIF
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -1227,7 +1227,7 @@ State 95
 
 State 96
 
-   29 cases: WHEN INT_LITERAL ARROWOP • statement_ $@4 optional_case
+   29 cases: WHEN INT_LITERAL ARROWOP . statement_ $@4 optional_case
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -1254,7 +1254,7 @@ State 96
 
 State 97
 
-   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP • statement_ ENDCASE
+   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP . statement_ ENDCASE
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -1281,14 +1281,14 @@ State 97
 
 State 98
 
-   23 statement: IF expression THEN $@2 statement_ ELSE statement_ • ENDIF
+   23 statement: IF expression THEN $@2 statement_ ELSE statement_ . ENDIF
 
     ENDIF  shift, and go to state 101
 
 
 State 99
 
-   29 cases: WHEN INT_LITERAL ARROWOP statement_ • $@4 optional_case
+   29 cases: WHEN INT_LITERAL ARROWOP statement_ . $@4 optional_case
 
     $default  reduce using rule 28 ($@4)
 
@@ -1297,21 +1297,21 @@ State 99
 
 State 100
 
-   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ • ENDCASE
+   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ . ENDCASE
 
     ENDCASE  shift, and go to state 103
 
 
 State 101
 
-   23 statement: IF expression THEN $@2 statement_ ELSE statement_ ENDIF •
+   23 statement: IF expression THEN $@2 statement_ ELSE statement_ ENDIF .
 
     $default  reduce using rule 23 (statement)
 
 
 State 102
 
-   29 cases: WHEN INT_LITERAL ARROWOP statement_ $@4 • optional_case
+   29 cases: WHEN INT_LITERAL ARROWOP statement_ $@4 . optional_case
 
     $default  reduce using rule 31 (optional_case)
 
@@ -1320,15 +1320,15 @@ State 102
 
 State 103
 
-   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE •
+   25 statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE .
 
     $default  reduce using rule 25 (statement)
 
 
 State 104
 
-   29 cases: WHEN INT_LITERAL ARROWOP statement_ $@4 optional_case •
-   30 optional_case: optional_case • case
+   29 cases: WHEN INT_LITERAL ARROWOP statement_ $@4 optional_case .
+   30 optional_case: optional_case . case
 
     WHEN  shift, and go to state 105
 
@@ -1339,28 +1339,28 @@ State 104
 
 State 105
 
-   32 case: WHEN • INT_LITERAL ARROWOP statement_
+   32 case: WHEN . INT_LITERAL ARROWOP statement_
 
     INT_LITERAL  shift, and go to state 107
 
 
 State 106
 
-   30 optional_case: optional_case case •
+   30 optional_case: optional_case case .
 
     $default  reduce using rule 30 (optional_case)
 
 
 State 107
 
-   32 case: WHEN INT_LITERAL • ARROWOP statement_
+   32 case: WHEN INT_LITERAL . ARROWOP statement_
 
     ARROWOP  shift, and go to state 108
 
 
 State 108
 
-   32 case: WHEN INT_LITERAL ARROWOP • statement_
+   32 case: WHEN INT_LITERAL ARROWOP . statement_
 
     error         shift, and go to state 31
     IDENTIFIER    shift, and go to state 32
@@ -1387,6 +1387,6 @@ State 108
 
 State 109
 
-   32 case: WHEN INT_LITERAL ARROWOP statement_ •
+   32 case: WHEN INT_LITERAL ARROWOP statement_ .
 
     $default  reduce using rule 32 (case)

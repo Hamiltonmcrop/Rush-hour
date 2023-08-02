@@ -1,9 +1,3 @@
-	
-// Compiler Theory and Design
-// Dr. Duane J. Jarc
-// This file contains the bodies of the functions that produces the compilation
-// listing
-
 %{
 #include <string>
 #include <vector>

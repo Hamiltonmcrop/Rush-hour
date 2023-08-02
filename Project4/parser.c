@@ -67,7 +67,7 @@
 
 
 /* First part of user prologue.  */
-#line 6 "parser.y"
+#line 7 "parser.y"
 
 
 #include <iostream>
@@ -576,12 +576,12 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    48,    48,    52,    53,    56,    58,    59,    63,    68,
-      70,    74,    75,    79,    83,    84,    85,    89,    89,    93,
-      94,    98,    99,   100,   100,   101,   101,   105,   106,   110,
-     110,   113,   114,   118,   121,   122,   126,   127,   131,   132,
-     136,   137,   141,   142,   146,   147,   148,   152,   153,   154,
-     158,   159,   163,   164,   165,   166,   167
+       0,    49,    49,    53,    54,    57,    59,    60,    64,    69,
+      71,    75,    76,    80,    84,    85,    86,    90,    90,    94,
+      95,    99,   100,   101,   101,   102,   102,   106,   107,   111,
+     111,   114,   115,   119,   122,   123,   127,   128,   132,   133,
+     137,   138,   142,   143,   147,   148,   149,   153,   154,   155,
+     159,   160,   164,   165,   166,   167,   168
 };
 #endif
 
@@ -1481,13 +1481,13 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* function_header: FUNCTION IDENTIFIER optional_parameter RETURNS type ';'  */
-#line 52 "parser.y"
+#line 53 "parser.y"
                                                                {storeReturnType((yyvsp[-1].type));}
 #line 1487 "parser.tab.c"
     break;
 
   case 8: /* variable: IDENTIFIER ':' type IS statement_  */
-#line 63 "parser.y"
+#line 64 "parser.y"
                                           { checkAssignment((yyvsp[-2].type), (yyvsp[0].type), "Variable Initialization");
 										symbols.findDuplicate((yyvsp[-4].iden), (yyvsp[-2].type));
 										symbols.insert((yyvsp[-4].iden), (yyvsp[-2].type));}
@@ -1495,175 +1495,175 @@ yyreduce:
     break;
 
   case 13: /* parameter: IDENTIFIER ':' type  */
-#line 79 "parser.y"
+#line 80 "parser.y"
                             {symbols.insert((yyvsp[-2].iden), (yyvsp[0].type));}
 #line 1501 "parser.tab.c"
     break;
 
   case 14: /* type: INTEGER  */
-#line 83 "parser.y"
+#line 84 "parser.y"
                 {(yyval.type) = INT_TYPE;}
 #line 1507 "parser.tab.c"
     break;
 
   case 15: /* type: REAL  */
-#line 84 "parser.y"
+#line 85 "parser.y"
                {(yyval.type) = REAL_TYPE;}
 #line 1513 "parser.tab.c"
     break;
 
   case 16: /* type: BOOLEAN  */
-#line 85 "parser.y"
+#line 86 "parser.y"
                   {(yyval.type) = BOOL_TYPE;}
 #line 1519 "parser.tab.c"
     break;
 
   case 17: /* $@1: %empty  */
-#line 89 "parser.y"
+#line 90 "parser.y"
                {began = true;}
 #line 1525 "parser.tab.c"
     break;
 
   case 19: /* statement_: statement ';'  */
-#line 93 "parser.y"
+#line 94 "parser.y"
                       {if(began) {checkReturnType((yyvsp[-1].type));}}
 #line 1531 "parser.tab.c"
     break;
 
   case 20: /* statement_: error ';'  */
-#line 94 "parser.y"
+#line 95 "parser.y"
                     {(yyval.type) = MISMATCH;}
 #line 1537 "parser.tab.c"
     break;
 
   case 22: /* statement: REDUCE operator reductions ENDREDUCE  */
-#line 99 "parser.y"
+#line 100 "parser.y"
                                                {(yyval.type) = (yyvsp[-1].type);}
 #line 1543 "parser.tab.c"
     break;
 
   case 23: /* $@2: %empty  */
-#line 100 "parser.y"
+#line 101 "parser.y"
                              {checkIf((yyvsp[-1].type));}
 #line 1549 "parser.tab.c"
     break;
 
   case 24: /* statement: IF expression THEN $@2 statement_ ELSE statement_ ENDIF  */
-#line 100 "parser.y"
+#line 101 "parser.y"
                                                                              { checkThenElse((yyvsp[-3].type), (yyvsp[-1].type)); if (began == true) {storeReturnType(REAL_TYPE);}}
 #line 1555 "parser.tab.c"
     break;
 
   case 25: /* $@3: %empty  */
-#line 101 "parser.y"
+#line 102 "parser.y"
                           {checkCaseExpression((yyvsp[0].type));}
 #line 1561 "parser.tab.c"
     break;
 
   case 26: /* statement: CASE expression $@3 IS cases OTHERS ARROWOP statement_ ENDCASE  */
-#line 101 "parser.y"
+#line 102 "parser.y"
                                                                                                 {checkCaseWhen((yyvsp[-1].type), "Others"); if (began == true) {storeReturnType(REAL_TYPE);}}
 #line 1567 "parser.tab.c"
     break;
 
   case 29: /* $@4: %empty  */
-#line 110 "parser.y"
+#line 111 "parser.y"
                                             {storeFirstWhen((yyvsp[0].type));}
 #line 1573 "parser.tab.c"
     break;
 
   case 33: /* case: WHEN INT_LITERAL ARROWOP statement_  */
-#line 118 "parser.y"
+#line 119 "parser.y"
                                       {checkCaseWhen((yyvsp[0].type), "When");}
 #line 1579 "parser.tab.c"
     break;
 
   case 34: /* reductions: %empty  */
-#line 121 "parser.y"
+#line 122 "parser.y"
                     {(yyval.type) = INT_TYPE;}
 #line 1585 "parser.tab.c"
     break;
 
   case 35: /* reductions: reductions statement_  */
-#line 122 "parser.y"
+#line 123 "parser.y"
                                 {(yyval.type) = checkArithmetic((yyvsp[-1].type), (yyvsp[0].type));}
 #line 1591 "parser.tab.c"
     break;
 
   case 36: /* expression: expression OROP binary  */
-#line 126 "parser.y"
+#line 127 "parser.y"
                                {checkLogical((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1597 "parser.tab.c"
     break;
 
   case 38: /* binary: binary ANDOP relation  */
-#line 131 "parser.y"
+#line 132 "parser.y"
                               {checkLogical((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1603 "parser.tab.c"
     break;
 
   case 40: /* relation: relation RELOP term  */
-#line 136 "parser.y"
+#line 137 "parser.y"
                             {(yyval.type) = checkRelational((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1609 "parser.tab.c"
     break;
 
   case 42: /* term: term ADDOP factor  */
-#line 141 "parser.y"
+#line 142 "parser.y"
                           {(yyval.type) = checkArithmetic((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1615 "parser.tab.c"
     break;
 
   case 44: /* factor: factor MULOP exponent  */
-#line 146 "parser.y"
+#line 147 "parser.y"
                               {(yyval.type) = checkArithmetic((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1621 "parser.tab.c"
     break;
 
   case 45: /* factor: factor REMOP exponent  */
-#line 147 "parser.y"
+#line 148 "parser.y"
                                 {(yyval.type) = checkRemainder((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1627 "parser.tab.c"
     break;
 
   case 47: /* exponent: exponent EXPOP unary  */
-#line 152 "parser.y"
+#line 153 "parser.y"
                              {(yyval.type) = checkArithmetic((yyvsp[-2].type), (yyvsp[0].type));}
 #line 1633 "parser.tab.c"
     break;
 
   case 50: /* unary: NOTOP primary  */
-#line 158 "parser.y"
+#line 159 "parser.y"
                       {(yyval.type) = (yyvsp[0].type);}
 #line 1639 "parser.tab.c"
     break;
 
   case 52: /* primary: '(' expression ')'  */
-#line 163 "parser.y"
+#line 164 "parser.y"
                            {(yyval.type) = (yyvsp[-1].type);}
 #line 1645 "parser.tab.c"
     break;
 
   case 53: /* primary: INT_LITERAL  */
-#line 164 "parser.y"
+#line 165 "parser.y"
                       {(yyval.type) = INT_TYPE;}
 #line 1651 "parser.tab.c"
     break;
 
   case 54: /* primary: REAL_LITERAL  */
-#line 165 "parser.y"
+#line 166 "parser.y"
                        {(yyval.type) = REAL_TYPE;}
 #line 1657 "parser.tab.c"
     break;
 
   case 55: /* primary: BOOL_LITERAL  */
-#line 166 "parser.y"
+#line 167 "parser.y"
                        {(yyval.type) = BOOL_TYPE;}
 #line 1663 "parser.tab.c"
     break;
 
   case 56: /* primary: IDENTIFIER  */
-#line 167 "parser.y"
+#line 168 "parser.y"
                      {if (!symbols.find((yyvsp[0].iden), (yyval.type))) appendError(UNDECLARED, (yyvsp[0].iden));}
 #line 1669 "parser.tab.c"
     break;
@@ -1893,7 +1893,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 170 "parser.y"
+#line 171 "parser.y"
 
 
 void yyerror(const char* message)
