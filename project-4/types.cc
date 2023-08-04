@@ -3,10 +3,6 @@
 
 // This file contains the bodies of the type checking functions
 
-// David Mejia - CMSC 430
-// project 4 skeleton was expanded, semantic checks in
-// form of functions were added.
-
 #include <string>
 #include <vector>
 #include <iostream>
