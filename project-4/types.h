@@ -1,13 +1,6 @@
 // Compiler Theory and Design
 // Duane J. Jarc
 
-// This file contains type definitions and the function
-// prototypes for the type checking functions
-
-// David Mejia - CMSC 430
-// project 4 skeleton was expanded, semantic checks in
-// form of functions were added.
-
 typedef char* CharPtr;
 
 enum Types {MISMATCH, INT_TYPE, BOOL_TYPE, REAL_TYPE};
