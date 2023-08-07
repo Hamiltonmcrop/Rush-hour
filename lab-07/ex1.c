@@ -1,7 +1,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <x86intrin.h>
-#include "simd.h"
+#include "ex1.h"
 
 long long int sum(int vals[NUM_ELEMS]) {
     clock_t start = clock();
